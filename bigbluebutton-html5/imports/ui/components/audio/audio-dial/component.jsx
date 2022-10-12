@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, defineMessages } from 'react-intl';
+import QRCode from 'react-qr-code';
 import Styled from './styles';
 
 const intlMessages = defineMessages({
@@ -46,6 +47,7 @@ class AudioDial extends React.PureComponent {
           {intl.formatMessage(intlMessages.audioDialDescription)}
         </Styled.Text>
         <Styled.DialText>{formattedDialNum}</Styled.DialText>
+        <QRCode value={formattedDialNum} />
         <Styled.ConferenceText>
           {intl.formatMessage(intlMessages.audioDialConfrenceText)}
         </Styled.ConferenceText>
