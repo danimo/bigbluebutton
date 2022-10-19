@@ -434,9 +434,15 @@ public class ParamsProcessorUtil {
         String dialNumber = processDialNumber(params.get(ApiParams.DIAL_NUMBER));
         String logoutUrl = processLogoutUrl(params.get(ApiParams.LOGOUT_URL));
         boolean record = processRecordMeeting(params.get(ApiParams.RECORD));
+        boolean record = processRecordMeeting(params.get(ApiParams.RECORD));
         int maxUsers = processMaxUser(params.get(ApiParams.MAX_PARTICIPANTS));
         int meetingDuration = processMeetingDuration(params.get(ApiParams.DURATION));
         int logoutTimer = processLogoutTimer(params.get(ApiParams.LOGOUT_TIMER));
+
+        boolean showDefaultMessage = true;
+	if (!StringUtils.isEmpty(params.get(ApiParams.SHOW_DEFAULT_MESSAGE))) {
+		showDefaultMessage = Boolean.valueOf(params.get(ApiParams.SHOW_DEFAULT_MESSAGE));
+	}
 
         // Banner parameters
         String bannerText = params.get(ApiParams.BANNER_TEXT);
@@ -449,7 +455,7 @@ public class ParamsProcessorUtil {
         }
 
         String welcomeMessageTemplate = processWelcomeMessage(
-                params.get(ApiParams.WELCOME), isBreakout);
+                params.get(ApiParams.WELCOME), isBreakout, showDefaultMessage);
         String welcomeMessage = substituteKeywords(welcomeMessageTemplate,
                 dialNumber, telVoice, meetingName);
 
@@ -844,12 +850,12 @@ public class ParamsProcessorUtil {
     return allowRevealOfBBBVersion;
   }
 
-    public String processWelcomeMessage(String message, Boolean isBreakout) {
+    public String processWelcomeMessage(String message, Boolean isBreakout, Boolean showDefaultMessage) {
         String welcomeMessage = message;
         if (StringUtils.isEmpty(message)) {
             welcomeMessage = defaultWelcomeMessage;
         }
-        if (!StringUtils.isEmpty(defaultWelcomeMessageFooter) && !isBreakout)
+        if (!StringUtils.isEmpty(defaultWelcomeMessageFooter) && !isBreakout && !showDefaultMessage)
             welcomeMessage += "<br><br>" + defaultWelcomeMessageFooter;
         return welcomeMessage;
     }
